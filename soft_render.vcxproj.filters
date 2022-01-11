@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{403fc567-808c-48b1-8d9c-c9d6cf517117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\display">
+      <UniqueIdentifier>{b06338d3-5604-4b92-a1a3-22ce386d9b2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render">
+      <UniqueIdentifier>{528842d2-a43a-43b5-9dbc-00db0684198d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\model">
+      <UniqueIdentifier>{584cb545-97a9-4eb6-abb2-474a68c68ec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{0e11f781-953e-458b-8831-25b851533786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\diablo3_pose">
+      <UniqueIdentifier>{364db601-4045-4003-984a-37cf7b21193c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\display\SDL2_display.cc">
+      <Filter>src\display</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\line.cc">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\file_model.cc">
+      <Filter>src\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\triangle.cc">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\zbuf.cc">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\render.cc">
+      <Filter>src\render</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\display\display.h">
+      <Filter>src\display</Filter>
+    </ClInclude>
+    <ClInclude Include="src\message_queue.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\line.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vec.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\model.h">
+      <Filter>src\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\triangle.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\zbuf.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\render.h">
+      <Filter>src\render</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="data\diablo3_pose\diablo3_pose.obj">
+      <Filter>data\diablo3_pose</Filter>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\diablo3_pose\diablo3_pose_diffuse.tga">
+      <Filter>data\diablo3_pose</Filter>
+    </Image>
+    <Image Include="data\diablo3_pose\diablo3_pose_glow.tga">
+      <Filter>data\diablo3_pose</Filter>
+    </Image>
+    <Image Include="data\diablo3_pose\diablo3_pose_nm.tga">
+      <Filter>data\diablo3_pose</Filter>
+    </Image>
+    <Image Include="data\diablo3_pose\diablo3_pose_nm_tangent.tga">
+      <Filter>data\diablo3_pose</Filter>
+    </Image>
+    <Image Include="data\diablo3_pose\diablo3_pose_spec.tga">
+      <Filter>data\diablo3_pose</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\diablo3_pose\readme.txt">
+      <Filter>data\diablo3_pose</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
