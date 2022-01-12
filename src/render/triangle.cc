@@ -152,16 +152,26 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 	}
 }
 
+#include <chrono>
+#include <iostream>
 #include "line.h"
+
 void render::triangle(const std::vector<std::vector<int>>& faces, const std::vector<std::vector<float>>& vertices)
 {
+	using namespace std::chrono;
+	auto start = high_resolution_clock::now();
+
 	for (auto& face : faces) {
-		Vec2f v0{ vertices[face[0] - 1][0], vertices[face[0] - 1][1] };
-		Vec2f v1{ vertices[face[1] - 1][0], vertices[face[1] - 1][1] };
-		Vec2f v2{ vertices[face[2] - 1][0], vertices[face[2] - 1][1] };
+		Vec2f v0{ vertices[(size_t)face[0] - 1][0], vertices[(size_t)face[0] - 1][1] };
+		Vec2f v1{ vertices[(size_t)face[1] - 1][0], vertices[(size_t)face[1] - 1][1] };
+		Vec2f v2{ vertices[(size_t)face[2] - 1][0], vertices[(size_t)face[2] - 1][1] };
 
 		line(v0, v1, 0xFFFFFF);
 		line(v1, v2, 0xFFFFFF);
 		line(v2, v0, 0xFFFFFF);
 	}
+
+	auto elapsed_ms = duration_cast<milliseconds>(high_resolution_clock::now() - start);
+	if (elapsed_ms.count() > 40)
+		std::cerr << "Render took " << elapsed_ms.count() << "\n";
 }
