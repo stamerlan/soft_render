@@ -6,6 +6,8 @@
 #include <cassert>
 #include <charconv>
 #include <fstream>
+#include <iomanip>
+#include <iostream>
 #include <string>
 #include <system_error>
 #include <vector>
@@ -41,14 +43,38 @@ static std::vector<float> parse_coord(std::string_view v)
 	return ret;
 }
 
+static std::vector<int> parse_faces(std::string_view v)
+{
+	std::vector<int> ret;
+
+	for (auto p = v.data(); p < v.data() + v.size();) {
+		int f;
+		auto [next, ec] = std::from_chars(p, v.data() + v.size(), f);
+		if (ec != std::errc())
+			return {};
+		ret.push_back(f);
+
+		/* skip until space */
+		for (; next < v.data() + v.size() && !isspace(*next); next++);
+		/* skip spaces */
+		for (; next < v.data() + v.size() && isspace(*next); next++);
+		p = next;
+	}
+
+	return ret;
+}
+
 Model::Model(const char *name) noexcept
 {
 	is_loaded_ = false;
 
 	std::ifstream file(name);
-	std::string str;
+	if (!file.is_open()) {
+		std::cerr << "Failed to open " << std::quoted(name) << "\n";
+		return;
+	}
 
-	std::vector<std::vector<float>> v;
+	std::string str;
 
 	while (std::getline(file, str)) {
 		/* TODO: use string_view to avoid copy */
@@ -64,9 +90,15 @@ Model::Model(const char *name) noexcept
 			 * coordinates, w is optional and defaults to 1.0.
 			 */
 			auto coord = parse_coord({ str.begin() + 2, str.end() });
-			if (coord.size() != 3)
+			if (coord.size() != 3) {
+				std::cerr << "Unexpected vertex: " << std::quoted(str) << ". {";
+				for (auto f : coord) {
+					std::cerr << " " << f;
+				}
+				std::cerr << " }\n";
 				return;
-			v.push_back(coord);
+			}
+			vertices_.insert(vertices_.end(), coord.begin(), coord.end());
 			continue;
 		}
 
@@ -90,10 +122,21 @@ Model::Model(const char *name) noexcept
 			 * f 6/4/1 3/5/3 7/6/5 # Vertex normal indices
 			 * f 7//1 8//2 9//3    # Vertex normal indices w/o texture coordinates
 			 */
+			auto faces = parse_faces({ str.begin() + 2, str.end() });
+			if (faces.size() != 3) {
+				std::cerr << "Unexpected faces: " << std::quoted(str) << ". {";
+				for (auto f : faces) {
+					std::cerr << " " << f;
+				}
+				std::cerr << " }\n";
+				return;
+			}
+			/* TODO: check if faces are valid */
+			faces_.insert(faces_.end(), faces.begin(), faces.end());
 			continue;
 		}
 
-		if (str.starts_with("g ")) {
+		if (str.starts_with("g ") || (str.size() == 1 && str[0] == 'g')) {
 			/* skip group name */
 			continue;
 		}
@@ -117,10 +160,12 @@ Model::Model(const char *name) noexcept
 		assert(false);
 	}
 
+	std::cerr << "Model " << std::quoted(name) << " loaded. Faces: " <<
+		faces_.size() << ", Vertices: " << vertices_.size() << "\n";
 	is_loaded_ = true;
 }
 
 bool Model::is_loaded(void) const noexcept
 {
-	return false;
+	return is_loaded_;
 }

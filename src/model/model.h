@@ -22,7 +22,8 @@ public:
 
 private:
 	bool is_loaded_;
-	std::vector<render::Vertex[3]> faces_;
+	std::vector<size_t> faces_;
+	std::vector<float> vertices_;
 };
 
 #endif /* MODEL_H_ */
