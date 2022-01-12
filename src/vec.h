@@ -42,7 +42,7 @@ struct Vec {
 	/* Return a vector length (magnitude) */
 	T length(void) const
 	{
-		return sqrt(std::accumulate(data.begin(), data.end(), 0));
+		return static_cast<T>(sqrt(std::accumulate(data.begin(), data.end(), 0)));
 	}
 
 	Vec<SIZE, T>& normalize(void)
@@ -106,11 +106,11 @@ struct Vec {
 
 	/* cross product is defined only for 3d space */
 	template <size_t SZ = SIZE, typename std::enable_if_t<SZ == 3, int> = 0>
-	Vec<SIZE, T>& operator*(const Vec<SIZE, T>& rhs)
+	Vec<SIZE, T>& operator^(const Vec<SIZE, T>& rhs)
 	{
-		T x = this.y * rhs.z - this.z * rhs.y;
-		T y = this.z * rhs.x - this.x * rhs.z;
-		T z = this.x * rhs.y - this.y * rhs.x;
+		T x = this->y * rhs.z - this->z * rhs.y;
+		T y = this->z * rhs.x - this->x * rhs.z;
+		T z = this->x * rhs.y - this->y * rhs.x;
 		this->data = { x, y, z };
 		return *this;
 	}
@@ -137,9 +137,17 @@ struct Vec {
 		return v;
 	}
 
+	T operator*(const Vec<SIZE, T>& rhs) const
+	{
+		T sum = 0;
+		for (size_t i = 0; i < SIZE; i++)
+			sum += data[i] * rhs.data[i];
+		return sum;
+	}
+
 	/* cross product is defined only for 3d space */
 	template <size_t SZ = SIZE, typename std::enable_if_t<SZ == 3, int> = 0>
-	Vec<SIZE, T> operator*(const Vec<SIZE, T>& rhs) const
+	Vec<SIZE, T> operator^(const Vec<SIZE, T>& rhs) const
 	{
 		auto copy = *this;
 		copy *= rhs;
