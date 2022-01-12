@@ -71,11 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="data\diablo3_pose\diablo3_pose.obj">
+    <None Include="data\diablo3_pose\diablo3_pose.obj">
       <Filter>data\diablo3_pose</Filter>
-    </Object>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\diablo3_pose\diablo3_pose_diffuse.tga">
