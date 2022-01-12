@@ -1,5 +1,6 @@
 #include "display/display.h"
 #include "message_queue.h"
+#include "model/model.h"
 #include "render/render.h"
 
 /* Draw a line in one color, than draw the same line in backward direction with
@@ -16,6 +17,8 @@ static constexpr bool draw_axis = false;
  * interpolation.
  */
 static constexpr bool draw_color_interpolation_test = false;
+/* Draw square to check if there are no holes between triangles */
+static constexpr bool draw_square_test = false;
 /* Draw two triangles which intersect each other in the middle. Expected correct
  * intersection in the middle of a triangle instead of overlapping.
  */
@@ -24,6 +27,9 @@ static constexpr bool draw_depth_test = false;
 int main(void)
 {
 	render::init();
+	Model obj("data/diablo3_pose/diablo3_pose.obj");
+	if (!obj.is_loaded())
+		goto out;
 
 	Message m;
 	for (bool quit = false; !quit;) {
@@ -56,7 +62,7 @@ int main(void)
 			render::triangle(v0, v1, v2);
 		}
 
-		{
+		if (draw_square_test) {
 			static const render::Vertex t[] = {
 				{ {-0.5f,   0.f,   0.f}, {0.f, 0.f, 0.f}, 0x808080 },
 				{ {-0.75f, -0.5f,  0.f}, {0.f, 0.f, 0.f}, 0x808080 },
@@ -83,8 +89,11 @@ int main(void)
 			render::triangle(t2[0], t2[1], t2[2]);
 		}
 
+		render::triangle(obj.faces_, obj.vertices_);
+
 		render::update();
 	}
+ out:
 	render::release();
 	return 0;
 }

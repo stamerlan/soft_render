@@ -98,7 +98,7 @@ Model::Model(const char *name) noexcept
 				std::cerr << " }\n";
 				return;
 			}
-			vertices_.insert(vertices_.end(), coord.begin(), coord.end());
+			vertices_.push_back(coord);
 			continue;
 		}
 
@@ -132,7 +132,7 @@ Model::Model(const char *name) noexcept
 				return;
 			}
 			/* TODO: check if faces are valid */
-			faces_.insert(faces_.end(), faces.begin(), faces.end());
+			faces_.push_back(faces);
 			continue;
 		}
 

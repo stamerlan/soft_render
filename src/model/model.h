@@ -20,10 +20,10 @@ public:
 
 	bool is_loaded(void) const noexcept;
 
-private:
+//private:
 	bool is_loaded_;
-	std::vector<size_t> faces_;
-	std::vector<float> vertices_;
+	std::vector<std::vector<int>> faces_;
+	std::vector<std::vector<float>> vertices_;
 };
 
 #endif /* MODEL_H_ */

@@ -2,6 +2,7 @@
 #define RENDER_TRIANGLE_H_
 
 #include <cstdint>
+#include <vector>
 #include "vec.h"
 
 namespace render {
@@ -19,8 +20,17 @@ struct Vertex {
  * @param v1:
  * @param v2:
  */
-
 void triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2);
+
+/** Render triangles
+ *
+ * @param faces: an array of faces
+ * @param faces_cnt: faces array size. must be multiple of 3
+ * @param vertices: an array of vertex coordinates.
+ *
+ * @note The function doesn't check if input arrays are valid.
+ */
+void triangle(const std::vector<std::vector<int>>& faces, const std::vector<std::vector<float>>& vertices);
 
 } /* namespace render */
 
