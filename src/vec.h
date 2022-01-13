@@ -43,7 +43,10 @@ struct Vec {
 	/* Return a vector length (magnitude) */
 	T length(void) const
 	{
-		return static_cast<T>(sqrt(std::accumulate(data.begin(), data.end(), 0)));
+		T len = 0;
+		for (size_t i = 0; i < SIZE; i++)
+			len += data[i] * data[i];
+		return std::sqrt(len);
 	}
 
 	Vec<SIZE, T>& normalize(void)
