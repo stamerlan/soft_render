@@ -70,7 +70,7 @@ void display::release(void)
 void display::clear(uint32_t color)
 {
 	for (auto& i : framebuffer)
-		i = color;
+		i = color | (uint32_t)0xFF000000;
 }
 
 void display::put(int x, int y, uint32_t color)
@@ -78,7 +78,7 @@ void display::put(int x, int y, uint32_t color)
 	if (x < 0 || y < 0 || (unsigned)x >= width || (unsigned)y >= height)
 		return;
 
-	framebuffer[(size_t)y * width + x] = (uint32_t)0x80000000 | color;
+	framebuffer[(size_t)y * width + x] = (uint32_t)0xFF000000 | color;
 }
 
 std::tuple<int, int> display::get_resolution(void)
