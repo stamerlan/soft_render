@@ -41,19 +41,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\diablo3_pose\diablo3_pose.obj">
+    <None Include="data\african_head.obj">
       <FileType>Document</FileType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="data\diablo3_pose\diablo3_pose_diffuse.tga" />
-    <Image Include="data\diablo3_pose\diablo3_pose_glow.tga" />
-    <Image Include="data\diablo3_pose\diablo3_pose_nm.tga" />
-    <Image Include="data\diablo3_pose\diablo3_pose_nm_tangent.tga" />
-    <Image Include="data\diablo3_pose\diablo3_pose_spec.tga" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="data\diablo3_pose\readme.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

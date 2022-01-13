@@ -16,9 +16,6 @@
     <Filter Include="data">
       <UniqueIdentifier>{0e11f781-953e-458b-8831-25b851533786}</UniqueIdentifier>
     </Filter>
-    <Filter Include="data\diablo3_pose">
-      <UniqueIdentifier>{364db601-4045-4003-984a-37cf7b21193c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cc">
@@ -71,30 +68,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="data\diablo3_pose\diablo3_pose.obj">
-      <Filter>data\diablo3_pose</Filter>
+    <None Include="data\african_head.obj">
+      <Filter>data</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="data\diablo3_pose\diablo3_pose_diffuse.tga">
-      <Filter>data\diablo3_pose</Filter>
-    </Image>
-    <Image Include="data\diablo3_pose\diablo3_pose_glow.tga">
-      <Filter>data\diablo3_pose</Filter>
-    </Image>
-    <Image Include="data\diablo3_pose\diablo3_pose_nm.tga">
-      <Filter>data\diablo3_pose</Filter>
-    </Image>
-    <Image Include="data\diablo3_pose\diablo3_pose_nm_tangent.tga">
-      <Filter>data\diablo3_pose</Filter>
-    </Image>
-    <Image Include="data\diablo3_pose\diablo3_pose_spec.tga">
-      <Filter>data\diablo3_pose</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="data\diablo3_pose\readme.txt">
-      <Filter>data\diablo3_pose</Filter>
-    </Text>
   </ItemGroup>
 </Project>

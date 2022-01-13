@@ -27,7 +27,7 @@ static constexpr bool draw_depth_test = false;
 int main(void)
 {
 	render::init();
-	Model obj("data/diablo3_pose/diablo3_pose.obj");
+	Model obj("data/african_head.obj");
 	if (!obj.is_loaded())
 		goto out;
 
