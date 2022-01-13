@@ -63,6 +63,13 @@ static uint32_t make_color(float r, float g, float b)
 	return (uint32_t)r << 16 | (uint32_t)g << 8 | (uint32_t)b;
 }
 
+static uint32_t make_color(float intensity)
+{
+	uint32_t c = (uint32_t)(intensity * 255);
+
+	return c << 16 | c << 8 | c;
+}
+
 void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 {
 	auto [width, height] = display::get_resolution();
@@ -152,26 +159,29 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 	}
 }
 
-#include <chrono>
-#include <iostream>
-#include "line.h"
-
 void render::triangle(const std::vector<std::vector<int>>& faces, const std::vector<std::vector<float>>& vertices)
 {
-	using namespace std::chrono;
-	auto start = high_resolution_clock::now();
-
 	for (auto& face : faces) {
-		Vec2f v0{ vertices[(size_t)face[0] - 1][0], vertices[(size_t)face[0] - 1][1] };
-		Vec2f v1{ vertices[(size_t)face[1] - 1][0], vertices[(size_t)face[1] - 1][1] };
-		Vec2f v2{ vertices[(size_t)face[2] - 1][0], vertices[(size_t)face[2] - 1][1] };
+		Vertex v[3];
 
-		line(v0, v1, 0xFFFFFF);
-		line(v1, v2, 0xFFFFFF);
-		line(v2, v0, 0xFFFFFF);
+		for (size_t i = 0; i < 3; i++)
+			v[i].v = { vertices[(size_t)face[i] - 1][0],
+				vertices[(size_t)face[i] - 1][1],
+				vertices[(size_t)face[i] - 1][2] };
+
+		/* calculate normal */
+		Vec3f n = (v[2].v - v[0].v) ^ (v[1].v - v[0].v);
+		n.normalize();
+		v[0].norm = v[1].norm = v[2].norm = n;
+
+		/* calculate color */
+		float intensity = v[0].norm.z * -1;
+		if (intensity < 0.f)
+			continue;
+
+		uint32_t color = make_color(intensity);
+		v[0].color = v[1].color = v[2].color = color;
+
+		triangle(v[0], v[1], v[2]);
 	}
-
-	auto elapsed_ms = duration_cast<milliseconds>(high_resolution_clock::now() - start);
-	if (elapsed_ms.count() > 40)
-		std::cerr << "Render took " << elapsed_ms.count() << "\n";
 }
