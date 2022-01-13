@@ -24,7 +24,7 @@ void render::zbuf::release(void)
 
 void render::zbuf::clear(void)
 {
-	std::fill(zbuffer.begin(), zbuffer.end(), std::numeric_limits<float>::infinity());
+	std::fill(zbuffer.begin(), zbuffer.end(), std::numeric_limits<float>::lowest());
 }
 
 bool render::zbuf::depth_test(int x, int y, float z)
@@ -32,7 +32,7 @@ bool render::zbuf::depth_test(int x, int y, float z)
 	if (x < 0 || (unsigned)x >= width || y < 0 || (unsigned)y >= height)
 		return false;
 
-	if (z < zbuffer[(size_t)y * width + x]) {
+	if (z > zbuffer[(size_t)y * width + x]) {
 		zbuffer[(size_t)y * width + x] = z;
 		return true;
 	}
