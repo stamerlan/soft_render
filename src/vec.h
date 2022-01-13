@@ -5,6 +5,7 @@
 #include <cassert>
 #include <cmath>
 #include <numeric>
+#include <ostream>
 #include <type_traits>
 
 template <size_t SIZE, typename T>
@@ -169,6 +170,17 @@ template <size_t SIZE, typename T>
 Vec<SIZE, T> operator*(T scalar, const Vec<SIZE, T>& v)
 {
 	return v * scalar;
+}
+
+template <size_t SIZE, typename T>
+std::ostream& operator<<(std::ostream& ostream, const Vec<SIZE, T>& v)
+{
+	ostream << "{" << v[0];
+	for (size_t i = 1; i < SIZE; i++)
+		ostream << ", " << v[i];
+	ostream << "}";
+
+	return ostream;
 }
 
 using Vec2f = Vec<2, float>;
