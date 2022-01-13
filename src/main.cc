@@ -89,7 +89,7 @@ int main(void)
 			render::triangle(t2[0], t2[1], t2[2]);
 		}
 
-		render::triangle(obj.faces_, obj.vertices_);
+		render::triangle(obj.faces_, obj.vertices_, obj.normals_);
 
 		render::update();
 	}

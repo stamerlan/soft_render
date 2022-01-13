@@ -24,41 +24,69 @@ static void trim(std::string &s)
 		}).base(), s.end());
 }
 
-static std::vector<float> parse_coord(std::string_view v)
+static std::vector<float> parse_coord(std::string_view str)
 {
 	std::vector<float> ret;
 
-	for (auto p = v.data(); p < v.data() + v.size();) {
+	for (auto p = str.data(); p < str.data() + str.size();) {
+		/* skip leading spaces */
+		for (; p < str.data() + str.size() && isspace(*p); p++);
+		if (p >= str.data() + str.size())
+			break;
+
 		float f;
-		auto [next, ec] = std::from_chars(p, v.data() + v.size(), f);
-		if (ec != std::errc())
+		auto conv_result = std::from_chars(p, str.data() + str.size(), f);
+		if (conv_result.ec != std::errc())
 			return {};
 		ret.push_back(f);
-
-		/* skip spaces between numbers */
-		for (; next < v.data() + v.size() && isspace(*next); next++);
-		p = next;
+		p = conv_result.ptr;
 	}
 
 	return ret;
 }
 
-static std::vector<int> parse_faces(std::string_view v)
+/* TODO: add error handling in case input string is invalid or doesn't contain
+ * normal/texture indices
+ */
+static struct Model::Face parse_faces(std::string_view str)
 {
-	std::vector<int> ret;
+	struct Model::Face ret;
 
-	for (auto p = v.data(); p < v.data() + v.size();) {
-		int f;
-		auto [next, ec] = std::from_chars(p, v.data() + v.size(), f);
-		if (ec != std::errc())
+	size_t idx = 0;
+	for (auto p = str.data(); p < str.data() + str.size(); idx++) {
+		/* skip leading spaces */
+		for (; p < str.data() + str.size() && isspace(*p); p++);
+		if (p >= str.data() + str.size())
 			return {};
-		ret.push_back(f);
 
-		/* skip until space */
-		for (; next < v.data() + v.size() && !isspace(*next); next++);
-		/* skip spaces */
-		for (; next < v.data() + v.size() && isspace(*next); next++);
-		p = next;
+		int f;
+		auto conv_result = std::from_chars(p, str.data() + str.size(), f);
+		if (conv_result.ec != std::errc())
+			return {};
+		ret.v_idx[idx] = f;
+		p = conv_result.ptr;
+
+		/* skip slash */
+		if (p >= str.data() + str.size() || p[0] != '/')
+			return {};
+		p++;
+
+		conv_result = std::from_chars(p, str.data() + str.size(), f);
+		if (conv_result.ec != std::errc())
+			return {};
+		ret.tex_idx[idx] = f;
+		p = conv_result.ptr;
+
+		/* skip slash */
+		if (p >= str.data() + str.size() || p[0] != '/')
+			return {};
+		p++;
+
+		conv_result = std::from_chars(p, str.data() + str.size(), f);
+		if (conv_result.ec != std::errc())
+			return {};
+		ret.n_idx[idx] = f;
+		p = conv_result.ptr;
 	}
 
 	return ret;
@@ -105,6 +133,17 @@ Model::Model(const char *name) noexcept
 		if (str.starts_with("vn ")) {
 			/* TODO: List of vertex normals in (x,y,z) form; normals might not
 			 * be unit vectors. */
+			auto coord = parse_coord({ str.begin() + 2, str.end() });
+			if (coord.size() != 3) {
+				std::cerr << "Unexpected normal: " << std::quoted(str) << ". {";
+				for (auto f : coord) {
+					std::cerr << " " << f;
+				}
+				std::cerr << " }\n";
+				return;
+			}
+			normals_.push_back(coord);
+
 			continue;
 		}
 
@@ -123,14 +162,6 @@ Model::Model(const char *name) noexcept
 			 * f 7//1 8//2 9//3    # Vertex normal indices w/o texture coordinates
 			 */
 			auto faces = parse_faces({ str.begin() + 2, str.end() });
-			if (faces.size() != 3) {
-				std::cerr << "Unexpected faces: " << std::quoted(str) << ". {";
-				for (auto f : faces) {
-					std::cerr << " " << f;
-				}
-				std::cerr << " }\n";
-				return;
-			}
 			/* TODO: check if faces are valid */
 			faces_.push_back(faces);
 			continue;
@@ -161,7 +192,8 @@ Model::Model(const char *name) noexcept
 	}
 
 	std::cerr << "Model " << std::quoted(name) << " loaded. Faces: " <<
-		faces_.size() << ", Vertices: " << vertices_.size() << "\n";
+		faces_.size() << ", Vertices: " << vertices_.size() << 
+		", Normals: " << normals_.size() << "\n";
 	is_loaded_ = true;
 }
 

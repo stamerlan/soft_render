@@ -2,10 +2,15 @@
 #define MODEL_H_
 
 #include <vector>
-#include <render/triangle.h>
 
 class Model {
 public:
+	struct Face {
+		int v_idx[3];
+		int tex_idx[3];
+		int n_idx[3];
+	};
+
 	/** Load a model.
 	 * Model data may be loaded to memory by bootloader or loaded from a file.
 	 * This class automatically handles OS/bare metal differences and constructs
@@ -22,8 +27,9 @@ public:
 
 //private:
 	bool is_loaded_;
-	std::vector<std::vector<int>> faces_;
+	std::vector<Face> faces_;
 	std::vector<std::vector<float>> vertices_;
+	std::vector<std::vector<float>> normals_;
 };
 
 #endif /* MODEL_H_ */

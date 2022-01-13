@@ -148,39 +148,44 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 			if (!zbuf::depth_test(x, y, p.z))
 				continue;
 
+			/* calculate normal */
+			Vec3f n{ w0 * v0.norm + w1 * v1.norm + w2 * v2.norm };
+
+			/* calculate color */
+			float intensity = n.z;
+			/* back-face culling */
+			if (intensity < 0.f)
+				continue;
+			uint32_t color = make_color(intensity);
+
 			/* TODO: GET COLOR FROM TEXTURE */
 			/* TODO: CALCULATE LIGHTING */
 
-			float r = w0 * get_r(v0.color) + w1 * get_r(v1.color) + w2 * get_r(v2.color);
-			float g = w0 * get_g(v0.color) + w1 * get_g(v1.color) + w2 * get_g(v2.color);
-			float b = w0 * get_b(v0.color) + w1 * get_b(v1.color) + w2 * get_b(v2.color);
-			display::put(x, y, make_color(r, g, b));
+			//float r = w0 * get_r(v0.color) + w1 * get_r(v1.color) + w2 * get_r(v2.color);
+			//float g = w0 * get_g(v0.color) + w1 * get_g(v1.color) + w2 * get_g(v2.color);
+			//float b = w0 * get_b(v0.color) + w1 * get_b(v1.color) + w2 * get_b(v2.color);
+			//display::put(x, y, make_color(r, g, b));
+			display::put(x, y, make_color(intensity));
 		}
 	}
 }
 
-void render::triangle(const std::vector<std::vector<int>>& faces, const std::vector<std::vector<float>>& vertices)
+void render::triangle(const std::vector<::Model::Face>& faces,
+	const std::vector<std::vector<float>>& vertices,
+	const std::vector<std::vector<float>>& normals)
 {
 	for (auto& face : faces) {
 		Vertex v[3];
 
 		for (size_t i = 0; i < 3; i++)
-			v[i].v = { vertices[(size_t)face[i] - 1][0],
-				vertices[(size_t)face[i] - 1][1],
-				vertices[(size_t)face[i] - 1][2] };
+			v[i].v = { vertices[(size_t)face.v_idx[i] - 1][0],
+				vertices[(size_t)face.v_idx[i] - 1][1],
+				vertices[(size_t)face.v_idx[i] - 1][2] };
 
-		/* calculate normal */
-		Vec3f n = (v[2].v - v[0].v) ^ (v[1].v - v[0].v);
-		n.normalize();
-		v[0].norm = v[1].norm = v[2].norm = n;
-
-		/* calculate color */
-		float intensity = v[0].norm.z * -1;
-		if (intensity < 0.f)
-			continue;
-
-		uint32_t color = make_color(intensity);
-		v[0].color = v[1].color = v[2].color = color;
+		for (size_t i = 0; i < 3; i++)
+			v[i].norm = { normals[(size_t)face.n_idx[i] - 1][0],
+				normals[(size_t)face.n_idx[i] - 1][1],
+				normals[(size_t)face.n_idx[i] - 1][2] };
 
 		triangle(v[0], v[1], v[2]);
 	}

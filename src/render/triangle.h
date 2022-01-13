@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <model/model.h>
 #include "vec.h"
 
 namespace render {
@@ -27,10 +28,13 @@ void triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2);
  * @param faces: an array of faces
  * @param faces_cnt: faces array size. must be multiple of 3
  * @param vertices: an array of vertex coordinates.
+ * @param normals: an array of normal coordinates.
  *
  * @note The function doesn't check if input arrays are valid.
  */
-void triangle(const std::vector<std::vector<int>>& faces, const std::vector<std::vector<float>>& vertices);
+void triangle(const std::vector<::Model::Face>& faces,
+	const std::vector<std::vector<float>>& vertices,
+	const std::vector<std::vector<float>>& normals);
 
 } /* namespace render */
 
