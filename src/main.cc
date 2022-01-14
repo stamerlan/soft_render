@@ -27,7 +27,7 @@ static constexpr bool draw_depth_test = false;
 int main(void)
 {
 	render::init();
-	Model obj("data/african_head.obj");
+	Model obj("data/african_head.obj", "data/african_head_diffuse.tga");
 	if (!obj.is_loaded())
 		goto out;
 
