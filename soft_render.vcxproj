@@ -45,6 +45,12 @@
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\african_head_diffuse.tga" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\readme.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

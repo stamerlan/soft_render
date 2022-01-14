@@ -72,4 +72,14 @@
       <Filter>data</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\african_head_diffuse.tga">
+      <Filter>data</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\readme.txt">
+      <Filter>data</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
