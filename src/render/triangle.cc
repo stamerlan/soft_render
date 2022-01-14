@@ -70,6 +70,39 @@ static uint32_t make_color(float intensity)
 	return c << 16 | c << 8 | c;
 }
 
+/* TODO: move to suitable place */
+static struct {
+	const uint32_t *color = nullptr; /* colors in RGB888 format */
+	size_t w;
+	size_t h;
+
+	uint32_t operator()(size_t u, size_t v)
+	{
+		assert(u < w);
+		assert(v < h);
+
+		return color[v * w + u];
+	}
+
+	uint32_t operator()(float u, float v)
+	{
+		assert(u <= 1.f);
+		assert(v <= 1.f);
+
+		size_t ui = (size_t)(u * (w - 1));
+		size_t vi = (size_t)(v * (h - 1));
+
+		return color[vi * w + ui];
+	}
+} texture;
+
+void render::set_texture(const std::vector<uint32_t>& image, size_t width, size_t height)
+{
+	texture.color = image.data();
+	texture.w = width;
+	texture.h = height;
+}
+
 void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 {
 	auto [width, height] = display::get_resolution();
@@ -151,28 +184,45 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 			/* calculate normal */
 			Vec3f n{ w0 * v0.norm + w1 * v1.norm + w2 * v2.norm };
 
-			/* calculate color */
-			float intensity = n.z;
+			/* calculate light intensity */
+			float intensity = n.z; /* TODO: multiply by light vector */
 			/* back-face culling */
 			if (intensity < 0.f)
 				continue;
-			uint32_t color = make_color(intensity);
 
-			/* TODO: GET COLOR FROM TEXTURE */
-			/* TODO: CALCULATE LIGHTING */
+			/* calculate color */
+			uint32_t color;
+			if (texture.color != nullptr) {
+				/* calculate texture coordinate */
+				Vec2f tex{
+					w0 * v0.tex.u + w1 * v1.tex.u + w2 * v2.tex.u,
+					w0 * v0.tex.v + w1 * v1.tex.v + w2 * v2.tex.v,
+				};
 
-			//float r = w0 * get_r(v0.color) + w1 * get_r(v1.color) + w2 * get_r(v2.color);
-			//float g = w0 * get_g(v0.color) + w1 * get_g(v1.color) + w2 * get_g(v2.color);
-			//float b = w0 * get_b(v0.color) + w1 * get_b(v1.color) + w2 * get_b(v2.color);
-			//display::put(x, y, make_color(r, g, b));
-			display::put(x, y, make_color(intensity));
+				uint32_t t = texture(tex.u, tex.v);
+				float r = intensity * get_r(t);
+				float g = intensity * get_g(t);
+				float b = intensity * get_b(t);
+
+				color = make_color(r, g, b);
+			} else {
+				/* calculate color from vertex color */
+				//float r = w0 * get_r(v0.color) + w1 * get_r(v1.color) + w2 * get_r(v2.color);
+				//float g = w0 * get_g(v0.color) + w1 * get_g(v1.color) + w2 * get_g(v2.color);
+				//float b = w0 * get_b(v0.color) + w1 * get_b(v1.color) + w2 * get_b(v2.color);
+				//display::put(x, y, make_color(r, g, b));
+
+				color = make_color(intensity);
+			}
+			display::put(x, y, color);
 		}
 	}
 }
 
 void render::triangle(const std::vector<::Model::Face>& faces,
 	const std::vector<std::vector<float>>& vertices,
-	const std::vector<std::vector<float>>& normals)
+	const std::vector<std::vector<float>>& normals,
+	const std::vector<std::vector<float>>& texture_uv)
 {
 	for (auto& face : faces) {
 		Vertex v[3];
@@ -186,6 +236,10 @@ void render::triangle(const std::vector<::Model::Face>& faces,
 			v[i].norm = { normals[(size_t)face.n_idx[i] - 1][0],
 				normals[(size_t)face.n_idx[i] - 1][1],
 				normals[(size_t)face.n_idx[i] - 1][2] };
+
+		for (size_t i = 0; i < 3; i++)
+			v[i].tex = { texture_uv[(size_t)face.tex_idx[i] - 1][0],
+				texture_uv[(size_t)face.tex_idx[i] - 1][1] };
 
 		triangle(v[0], v[1], v[2]);
 	}
