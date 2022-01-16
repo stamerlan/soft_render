@@ -65,6 +65,9 @@
     <ClInclude Include="src\render\render.h">
       <Filter>src\render</Filter>
     </ClInclude>
+    <ClInclude Include="src\matrix.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
