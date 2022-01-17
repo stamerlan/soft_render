@@ -1,4 +1,5 @@
 #include "display.h"
+#include <format>
 #include <vector>
 #include <SDL.h>
 
@@ -17,10 +18,11 @@ int display::init(int w, int h)
 {
 	if (w <= 0 || h <= 0)
 		return 1;
+	auto wnd_name = std::format("soft_render {}x{}", w, h);
 
 	if (SDL_Init(SDL_INIT_VIDEO))
 		goto ret;
-	if (!(window = SDL_CreateWindow("soft_render", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0)))
+	if (!(window = SDL_CreateWindow(wnd_name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0)))
 		goto quit;
 	if (!(renderer = SDL_CreateRenderer(window, -1, 0)))
 		goto destroy_wnd;
