@@ -4,14 +4,15 @@
 #include <matrix.h>
 #include <render/zbuf.h>
 
-Mat4x4f projection;
+Mat4x4f model_view;
 Mat4x4f viewport;
+Mat4x4f projection;
 
 /* project geometric vertex to screen space
  */
 static Vec3f project_to_screen(const Vec3f& v)
 {
-	auto r = viewport * projection * Matrix<4, 1, float>{v.x, v.y, v.z, 1.f};
+	auto r = viewport * projection * model_view * Matrix<4, 1, float>{v.x, v.y, v.z, 1.f};
 	return { r(0, 0) / r(3, 0), r(1, 0) / r(3, 0), r(2, 0) / r(3, 0) };
 }
 
