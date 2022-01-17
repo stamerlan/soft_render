@@ -26,7 +26,7 @@ public:
 	{
 		for (size_t r = 0; r < ROWS; r++)
 			for (size_t c = 0; c < COLUMNS; c++)
-				data_[r][c] = r == c ? 1 : 0;
+				data_[r][c] = r == c ? static_cast<T>(1) : static_cast<T>(0);
 	}
 
 	/** Multiply matrices */
@@ -69,5 +69,7 @@ std::ostream& operator<<(std::ostream& ostream, const Matrix<ROWS, COLUMNS, T>& 
 
 	return ostream;
 }
+
+using Mat4x4f = Matrix<4, 4, float>;
 
 #endif /* MARIX_H_ */
