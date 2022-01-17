@@ -110,7 +110,7 @@ struct Vec {
 
 	/* cross product is defined only for 3d space */
 	template <size_t SZ = SIZE, typename std::enable_if_t<SZ == 3, int> = 0>
-	Vec<SIZE, T>& operator^(const Vec<SIZE, T>& rhs)
+	Vec<SIZE, T>& operator^=(const Vec<SIZE, T>& rhs)
 	{
 		T x = this->y * rhs.z - this->z * rhs.y;
 		T y = this->z * rhs.x - this->x * rhs.z;
@@ -154,7 +154,7 @@ struct Vec {
 	Vec<SIZE, T> operator^(const Vec<SIZE, T>& rhs) const
 	{
 		auto copy = *this;
-		copy *= rhs;
+		copy ^= rhs;
 		return copy;
 	}
 
