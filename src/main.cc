@@ -1,4 +1,5 @@
 #include "display/display.h"
+#include "matrix.h"
 #include "message_queue.h"
 #include "model/model.h"
 #include "render/render.h"
@@ -24,13 +25,41 @@ static constexpr bool draw_square_test = false;
  */
 static constexpr bool draw_depth_test = false;
 
+static void set_viewport(const int w, const int h)
+{
+	extern Mat4x4f viewport;
+	viewport.identity();
+
+	viewport(0, 0) = w / 2.f;
+	viewport(0, 3) = w / 2.f;
+
+	viewport(1, 1) = (-h / 2.f);
+	viewport(1, 3) = h / 2.f;
+}
+
+static void set_perspective_projection(const int w, const int h)
+{
+	extern Mat4x4f projection;
+	projection.identity();
+	projection(1, 1) = (float)w / (float)h;
+}
+
 int main(void)
 {
-	render::init();
+	constexpr int w = 800;
+	constexpr int h = 600;
+
+	render::init(w, h);
+	auto [width, height] = display::get_resolution();
+
 	Model obj("data/african_head.obj", "data/african_head_diffuse.tga");
 	if (!obj.is_loaded())
 		goto out;
+	
 	render::set_texture(obj.texture_image_, obj.texture_width_, obj.texture_height_);
+
+	set_viewport(width, height);
+	set_perspective_projection(width, height);
 
 	Message m;
 	for (bool quit = false; !quit;) {

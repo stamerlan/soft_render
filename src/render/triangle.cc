@@ -1,37 +1,18 @@
 #include "triangle.h"
 #include <algorithm>
 #include <display/display.h>
+#include <matrix.h>
 #include <render/zbuf.h>
 
-/* project geometric vertices to screen space
- * TODO: smth like that?
- *   float nearClippingPlane = 0.1; 
- *   // point in camera space
- *   Vec3f pCamera; 
- *   worldToCamera.multVecMatrix(pWorld, pCamera); 
- *   // convert to screen space
- *   Vec2f pScreen; 
- *   pScreen.x = nearClippingPlane * pCamera.x / -pCamera.z;
- *   pScreen.y = nearClippingPlane * pCamera.y / -pCamera.z;
- *   // now convert point from screen space to NDC space (in range [-1,1])
- *   Vec2f pNDC; 
- *   pNDC.x = 2 * pScreen.x / (r - l) - (r + l) / (r - l);
- *   pNDC.y = 2 * pScreen.y / (t - b) - (t + b) / (t - b);
- *   // convert to raster space and set point z-coordinate to -pCamera.z
- *   Vec3f pRaster; 
- *   pRaster.x = (pScreen.x + 1) / 2 * imageWidth;
- *   // in raster space y is down so invert direction
- *   pRaster.y = (1 - pScreen.y) / 2 * imageHeight;
- *   // store the point camera space z-coordinate (as a positive value)
- *   pRaster.z = -pCamera.z; 
+Mat4x4f projection;
+Mat4x4f viewport;
+
+/* project geometric vertex to screen space
  */
-static Vec3f project_to_screen(const render::Vertex& v)
+static Vec3f project_to_screen(const Vec3f& v)
 {
-	auto [width, height] = display::get_resolution();
-	float x = (v.v.x + 1.f) * width / 2;
-	float y = (1.f - v.v.y) * height / 2;
-	float z = v.v.z;
-	return { x, y, z };
+	auto r = viewport * projection * Matrix<4, 1, float>{v.x, v.y, v.z, 1.f};
+	return { r(0, 0) / r(3, 0), r(1, 0) / r(3, 0), r(2, 0) / r(3, 0) };
 }
 
 /* return signed area of the triangle ABP multiplied by 2.
@@ -107,9 +88,9 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 {
 	auto [width, height] = display::get_resolution();
 
-	auto p0 = project_to_screen(v0);
-	auto p1 = project_to_screen(v1);
-	auto p2 = project_to_screen(v2);
+	auto p0 = project_to_screen(v0.v);
+	auto p1 = project_to_screen(v1.v);
+	auto p2 = project_to_screen(v2.v);
 
 	/* bounding box */
 	Vec2i bbox_min = { (int)std::min({p0.x, p1.x, p2.x}), (int)std::min({p0.y, p1.y, p2.y}) };
