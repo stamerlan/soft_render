@@ -18,11 +18,19 @@ void line(int x0, int y0, int x1, int y1, uint32_t color);
 
 /** Draw a line in normalized device coordinates (-1.0, 1.0)
  *
- * @param p0: point 0 vector 
+ * @param p0: point 0 vector
  * @param p1: point 1 vector
  * @param color: the line color in RGB888 format
  */
 void line(Vec2f p0, Vec2f p1, uint32_t color);
+
+/** Draw a line in normalized device coordinates (-1.0, 1.0)
+ *
+ * @param p0: point 0 vector
+ * @param p1: point 1 vector
+ * @param color: the line color in RGB888 format
+ */
+void line(Vec3f p0, Vec3f p1, uint32_t color);
 
 } /* namespace render */
 

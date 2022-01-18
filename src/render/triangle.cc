@@ -8,7 +8,7 @@
  * model_view * point = world_coordinates of the point
  */
 Mat4x4f model_view;
-/* convert normal device coordinates [-1.0, 1.0] to screen coordinates [0, width] */
+/* convert normalized device coordinates (-1.0, 1.0) to screen coordinates */
 Mat4x4f viewport;
 /* apply projection transformation (perspective division) */
 Mat4x4f projection;

@@ -76,6 +76,10 @@ int main(void)
 				quit = true;
 
 		render::clear();
+		render::line({ -2.f, 0.f, 0.f }, { 2.f, 0.f, 0.f }, 0xFF0000);
+		render::line({ 0.f, -2.f, 0.f }, { 0.f, 2.f, 0.f }, 0x00FF00);
+		render::line({ 0.f, 0.f, -4.f }, { 0.f, 0.f, 4.f }, 0x0000FF);
+
 		render::triangle(obj.faces_, obj.vertices_, obj.normals_, obj.texture_);
 		render::update();
 	}
