@@ -43,6 +43,14 @@ public:
 		return ret;
 	}
 
+	Matrix<ROWS, COLUMNS, T> operator /=(T rhs)
+	{
+		for (size_t i = 0; i < ROWS; i++)
+			for (size_t j = 0; j < COLUMNS; j++)
+				data_[i][j] /= rhs;
+		return *this;
+	}
+
 	T& operator()(size_t row, size_t column)
 	{
 		return data_[row][column];
