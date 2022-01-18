@@ -86,5 +86,6 @@ std::ostream& operator<<(std::ostream& ostream, const Matrix<ROWS, COLUMNS, T>& 
 }
 
 using Mat4x4f = Matrix<4, 4, float>;
+using Mat4x1f = Matrix<4, 1, float>;
 
 #endif /* MARIX_H_ */
