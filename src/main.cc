@@ -64,6 +64,9 @@ static void lookat(const Vec3f& eye, const Vec3f& center, const Vec3f& up)
 
 	extern Mat4x4f model_view;
 	model_view = Minv * Tr;
+
+	extern Mat4x4f projection;
+	projection(3, 3) = (eye - center).length();
 }
 
 int main(void)
@@ -71,8 +74,8 @@ int main(void)
 	constexpr int w = 800;
 	constexpr int h = 600;
 
-	const Vec3f eye{ 0.f, 0.f, 1.f };
-	const Vec3f center{ -0.25f, 0.f, 0.f };
+	const Vec3f eye{ 0.5f, 0.25f, 1.f * ((float)w / (float)h) };
+	const Vec3f center{ 0.f, 0.f, 0.f };
 
 	render::init(w, h);
 	auto [width, height] = display::get_resolution();
