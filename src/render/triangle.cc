@@ -4,7 +4,9 @@
 #include <matrix.h>
 #include <render/zbuf.h>
 
-/* apply model rotation/transformations and convert coordinates to camera space */
+/* apply model rotation/transformations and camera view.
+ * model_view * point = world_coordinates of the point
+ */
 Mat4x4f model_view;
 /* convert normal device coordinates [-1.0, 1.0] to screen coordinates [0, width] */
 Mat4x4f viewport;
@@ -15,8 +17,8 @@ Mat4x4f projection;
  */
 static Vec3f project_to_screen(const Vec3f& v)
 {
-	auto r = viewport * projection * model_view * Matrix<4, 1, float>{v.x, v.y, v.z, 1.f};
-	return { r(0, 0) / r(3, 0), r(1, 0) / r(3, 0), r(2, 0) / r(3, 0) };
+	auto r = viewport * projection * model_view * Mat4x1f{v.x, v.y, v.z, 1.f};
+	return r / r(3, 0);
 }
 
 /* return signed area of the triangle ABP multiplied by 2.
@@ -179,10 +181,7 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 			uint32_t color;
 			if (texture.color != nullptr) {
 				/* calculate texture coordinate */
-				Vec2f tex{
-					w0 * v0.tex.u + w1 * v1.tex.u + w2 * v2.tex.u,
-					w0 * v0.tex.v + w1 * v1.tex.v + w2 * v2.tex.v,
-				};
+				Vec2f tex = w0 * v0.tex + w1 * v1.tex + w2 * v2.tex;
 
 				uint32_t t = texture(tex.u, tex.v);
 				float r = intensity * get_r(t);
