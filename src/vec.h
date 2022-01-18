@@ -186,7 +186,7 @@ struct Vec {
 		return copy;
 	}
 
-	Vec<SIZE, T> operator/=(T scalar) const
+	Vec<SIZE, T> operator/(T scalar) const
 	{
 		auto copy = *this;
 		copy /= scalar;
