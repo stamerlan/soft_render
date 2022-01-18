@@ -7,6 +7,7 @@
 #include <numeric>
 #include <ostream>
 #include <type_traits>
+#include "matrix.h"
 
 template <size_t SIZE, typename T>
 struct Vec {
@@ -14,6 +15,33 @@ struct Vec {
 
 	Vec(void) : data{ 0 }
 	{
+	}
+
+	template<size_t MAT_SIZE>
+	Vec(const Matrix<MAT_SIZE, 1, T>& m)
+	{
+		for (size_t i = 0; i < std::min(SIZE, MAT_SIZE); i++)
+			data[i] = m(i, 0);
+		for (size_t i = MAT_SIZE; i < SIZE; i++)
+			data[i] = 0;
+	}
+
+	template<size_t MAT_SIZE>
+	Vec(const Matrix<1, MAT_SIZE, T>& m)
+	{
+		for (size_t i = 0; i < std::min(SIZE, MAT_SIZE); i++)
+			data[i] = m(0, i);
+		for (size_t i = MAT_SIZE; i < SIZE; i++)
+			data[i] = 0;
+	}
+
+	template<size_t OTHER_V_SIZE>
+	Vec(const Vec<OTHER_V_SIZE, T>& v)
+	{
+		for (size_t i = 0; i < std::min(SIZE, OTHER_V_SIZE); i++)
+			data[i] = v[i];
+		for (size_t i = OTHER_V_SIZE; i < SIZE; i++)
+			data[i] = 0;
 	}
 
 	template <typename... RestArgs>
