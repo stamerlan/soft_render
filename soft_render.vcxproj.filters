@@ -70,10 +70,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="data\african_head.obj">
       <Filter>data</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\african_head_diffuse.tga">
