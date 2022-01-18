@@ -4,8 +4,11 @@
 #include <matrix.h>
 #include <render/zbuf.h>
 
+/* apply model rotation/transformations and convert coordinates to camera space */
 Mat4x4f model_view;
+/* convert normal device coordinates [-1.0, 1.0] to screen coordinates [0, width] */
 Mat4x4f viewport;
+/* apply projection transformation (perspective division) */
 Mat4x4f projection;
 
 /* project geometric vertex to screen space
