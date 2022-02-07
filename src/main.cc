@@ -20,7 +20,7 @@ int main(void)
 		goto out;
 	
 	render::set_texture(obj.texture_image_, obj.texture_width_, obj.texture_height_);
-
+	render::lookat(eye, center);
 
 	Message m;
 	for (bool quit = false; !quit;) {

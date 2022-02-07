@@ -78,10 +78,25 @@ void render::zbuf_enable(bool en)
 	zbuf_enabled = en;
 }
 
-/* project geometric vertex to screen space
- */
 Vec3f render::project_to_screen(const Vec3f& v)
 {
 	auto r = MVP * Mat4x1f{ v.x, v.y, v.z, 1.f };
 	return r;
+}
+
+void render::lookat(const Vec3f& eye, const Vec3f& at, const Vec3f& up)
+{
+	auto forward = (eye - at).normalize();
+	auto up_norm = up;
+	up_norm.normalize();
+	auto right = up_norm ^ forward;
+
+	view.identity();
+	for (size_t i = 0; i < 3; i++) {
+		view(0, i) = right[i];
+		view(1, i) = up_norm[i];
+		view(2, i) = forward[i];
+	}
+
+	update_MVP();
 }
