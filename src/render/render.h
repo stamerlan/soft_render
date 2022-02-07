@@ -28,7 +28,7 @@ Vec3f project_to_screen(const Vec3f& v);
  * @param at: point to look at (world coordinates)
  * @param up: vector pointing to the upward direction (world coordinates)
  */
-void lookat(const Vec3f& eye, const Vec3f& at, const Vec3f& up = { 0.f, 1.f, 0.f });
+void lookat(const Vec3f& eye, const Vec3f& at, const Vec3f& up);
 
 } /* namespace render */
 

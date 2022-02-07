@@ -80,7 +80,8 @@ void render::zbuf_enable(bool en)
 
 Vec3f render::project_to_screen(const Vec3f& v)
 {
-	auto r = MVP * Mat4x1f{ v.x, v.y, v.z, 1.f };
+	Vec4f r = MVP * Mat4x1f{ v.x, v.y, v.z, 1.f };
+	r /= r.w;
 	return r;
 }
 
@@ -97,6 +98,8 @@ void render::lookat(const Vec3f& eye, const Vec3f& at, const Vec3f& up)
 		view(1, i) = up_norm[i];
 		view(2, i) = forward[i];
 	}
+
+	projection(3, 2) = -1.f / (eye - at).length();
 
 	update_MVP();
 }

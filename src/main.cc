@@ -6,11 +6,12 @@
 
 int main(void)
 {
-	constexpr int w = 800;
-	constexpr int h = 800;
+	constexpr int w = 600;
+	constexpr int h = 600;
 
-	const Vec3f eye{ 0.5f, 0.25f, 1.f * ((float)w / (float)h) };
+	const Vec3f eye{ 0.f, 0.f, 3.f };
 	const Vec3f center{ 0.f, 0.f, 0.f };
+	const Vec3f up{ 0.f, 1.f, 0.f };
 
 	render::init(w, h);
 	auto [width, height] = display::get_resolution();
@@ -20,7 +21,7 @@ int main(void)
 		goto out;
 	
 	render::set_texture(obj.texture_image_, obj.texture_width_, obj.texture_height_);
-	render::lookat(eye, center);
+	render::lookat(eye, center, up);
 
 	Message m;
 	for (bool quit = false; !quit;) {
