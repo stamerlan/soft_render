@@ -68,6 +68,12 @@ struct Vec {
 	void putz(T val) { data[2] = val; }
 	__declspec(property(get = getz, put = putz)) T z;
 
+	template <size_t SZ = SIZE, typename std::enable_if_t<SZ >= 4, int> = 0>
+	T getw(void) const { return data[3]; }
+	template <size_t SZ = SIZE, typename std::enable_if_t<SZ >= 4, int> = 0>
+	void putw(T val) { data[3] = val; }
+	__declspec(property(get = getw, put = putw)) T w;
+
 	/* Return a vector length (magnitude) */
 	T length(void) const
 	{
@@ -218,5 +224,6 @@ using Vec2f = Vec<2, float>;
 using Vec2i = Vec<2, int>;
 using Vec3f = Vec<3, float>;
 using Vec3i = Vec<3, int>;
+using Vec4f = Vec<4, float>;
 
 #endif /* VEC_H_ */
