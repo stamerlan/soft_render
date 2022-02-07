@@ -15,6 +15,13 @@ int update(void);
 bool is_zbuf_enabled(void);
 void zbuf_enable(bool en);
 
+/** Project geometric vertex to screen space
+ * Apply model, view and projection transformations
+ *
+ * @param v: model vertex
+ */
+Vec3f project_to_screen(const Vec3f& v);
+
 } /* namespace render */
 
 #endif /* RENDER_RENDER_H_ */

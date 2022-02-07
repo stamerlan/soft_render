@@ -3,6 +3,30 @@
 
 static bool zbuf_enabled = true;
 
+/* Apply model rotation, scaling, transformation.
+ * In other words converts model coordinates to world coordinates:
+ * model * v = world_coordinates
+ */
+static Mat4x4f model;
+/* Project world coordinates to camera space:
+ * view * world_coordinates = camera_coordinates
+ */
+static Mat4x4f view;
+/* Apply perspective projection:
+ * projection * camera_coordinates = homogeneous_coordinates
+ */
+static Mat4x4f projection;
+/* Convert homogeneous coordinates (-1.0, 1.0) to screen coordinates */
+static Mat4x4f viewport;
+
+/* A product of (viewport * projection * view * model) */
+static Mat4x4f MVP;
+
+static void update_MVP(void)
+{
+	MVP = viewport * projection * view * model;
+}
+
 int render::init(int w, int h)
 {
 	if (display::init(w, h))
@@ -12,6 +36,18 @@ int render::init(int w, int h)
 		return 1;
 	}
 
+	model.identity();
+	view.identity();
+	projection.identity();
+
+	viewport.identity();
+	viewport(0, 0) = w / 2.f;
+	viewport(0, 3) = w / 2.f;
+
+	viewport(1, 1) = (-h / 2.f);
+	viewport(1, 3) = h / 2.f;
+
+	update_MVP();
 	return 0;
 }
 
@@ -37,7 +73,15 @@ bool render::is_zbuf_enabled(void)
 	return zbuf_enabled;
 }
 
-void zbuf_enable(bool en)
+void render::zbuf_enable(bool en)
 {
 	zbuf_enabled = en;
+}
+
+/* project geometric vertex to screen space
+ */
+Vec3f render::project_to_screen(const Vec3f& v)
+{
+	auto r = MVP * Mat4x1f{ v.x, v.y, v.z, 1.f };
+	return r;
 }

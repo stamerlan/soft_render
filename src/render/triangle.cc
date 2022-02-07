@@ -2,24 +2,8 @@
 #include <algorithm>
 #include <display/display.h>
 #include <matrix.h>
+#include <render/render.h>
 #include <render/zbuf.h>
-
-/* apply model rotation/transformations and camera view.
- * model_view * point = world_coordinates of the point
- */
-Mat4x4f model_view;
-/* convert normalized device coordinates (-1.0, 1.0) to screen coordinates */
-Mat4x4f viewport;
-/* apply projection transformation (perspective division) */
-Mat4x4f projection;
-
-/* project geometric vertex to screen space
- */
-static Vec3f project_to_screen(const Vec3f& v)
-{
-	auto r = viewport * projection * model_view * Mat4x1f{v.x, v.y, v.z, 1.f};
-	return r / r(3, 0);
-}
 
 /* return signed area of the triangle ABP multiplied by 2.
  * if point p at the right hand side of AB the result is positive. If the point

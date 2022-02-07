@@ -2,6 +2,7 @@
 #include <cmath>
 #include <display/display.h>
 #include <matrix.h>
+#include <render/render.h>
 #include <render/zbuf.h>
 
 void render::line(int x0, int y0, int x1, int y1, uint32_t color)
@@ -55,10 +56,8 @@ extern Mat4x4f viewport;
 extern Mat4x4f projection;
 void render::line(Vec3f p0, Vec3f p1, uint32_t color)
 {
-	auto r = viewport * projection * model_view * Mat4x1f{ p0.x, p0.y, p0.z, 1.f };
-	Vec3f v0{ r / r(3, 0) };
-	r = viewport * projection * model_view * Mat4x1f{ p1.x, p1.y, p1.z, 1.f };
-	Vec3f v1{ r / r(3, 0) };
+	auto v0{ project_to_screen(p0) };
+	auto v1{ project_to_screen(p1) };
 
 	bool steep = false;
 	if (std::abs(v0.x - v1.x) < std::abs(v0.y - v1.y)) {
@@ -67,9 +66,8 @@ void render::line(Vec3f p0, Vec3f p1, uint32_t color)
 		steep = true;
 	}
 
-	if (v0.x > v1.x) {
+	if (v0.x > v1.x)
 		std::swap(v0, v1);
-	}
 
 	int dx = (int)(v1.x - v0.x);
 	int dy = (int)(v1.y - v0.y);
