@@ -54,6 +54,13 @@ void scale(float x, float y, float z);
  */
 void translate(float x, float y, float z);
 
+/** Rotate model around X axis.
+ * Multiply current model matrix by rotation matrix.
+ *
+ * @param angle: angle expressed in radians.
+ */
+void rotate_x(float angle);
+
 } /* namespace model_mat */
 
 } /* namespace render */

@@ -133,3 +133,20 @@ void render::model_mat::translate(float x, float y, float z)
 	model *= translation;
 	update_MVP();
 }
+
+void render::model_mat::rotate_x(float angle)
+{
+	mat4x4f_t rotation;
+	rotation.identity();
+
+	float c = cos(angle);
+	float s = sin(angle);
+
+	rotation(1, 1) = c;
+	rotation(1, 2) = -s;
+	rotation(2, 1) = s;
+	rotation(2, 2) = c;
+
+	model *= rotation;
+	update_MVP();
+}

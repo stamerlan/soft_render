@@ -1,3 +1,5 @@
+#include <chrono>
+#include <numbers>
 #include "display/display.h"
 #include "matrix.h"
 #include "message_queue.h"
@@ -29,6 +31,20 @@ int main(void)
 			if (m.type == Message::type::QUIT)
 				quit = true;
 
+		static float angle{ 0.f };
+		{
+			using namespace std::chrono;
+			static auto last_rotation_ts{ steady_clock::now() };
+		
+			auto elapsed = steady_clock::now() - last_rotation_ts;
+			if (elapsed >= 20ms) {
+				angle += std::numbers::pi_v<float> / 180.f;
+				if (angle > 2 * std::numbers::pi_v<float>)
+					angle -= 2 * std::numbers::pi_v<float>;
+				last_rotation_ts = steady_clock::now();
+			}
+		}
+
 		render::clear();
 		render::model_mat::identity();
 		render::line({ -2.f, 0.f, 0.f }, { 2.f, 0.f, 0.f }, 0xFF0000);
@@ -37,6 +53,7 @@ int main(void)
 
 		render::model_mat::scale(0.75f, 0.75f, 1.f);
 		render::model_mat::translate(-1.f, 0.f, -1.5f);
+		render::model_mat::rotate_x(angle);
 		render::triangle(obj.faces_, obj.vertices_, obj.normals_, obj.texture_);
 		render::update();
 	}
