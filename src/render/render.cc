@@ -103,3 +103,21 @@ void render::lookat(const vec3f_t& eye, const vec3f_t& at, const vec3f_t& up)
 
 	update_MVP();
 }
+
+void render::model_mat::identity(void)
+{
+	model.identity();
+	update_MVP();
+}
+
+void render::model_mat::scale(float x, float y, float z)
+{
+	mat4x4f_t scaling;
+	scaling(0, 0) = x;
+	scaling(1, 1) = y;
+	scaling(2, 2) = z;
+	scaling(3, 3) = 1.f;
+
+	model *= scaling;
+	update_MVP();
+}

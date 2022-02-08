@@ -15,20 +15,36 @@ int update(void);
 bool is_zbuf_enabled(void);
 void zbuf_enable(bool en);
 
-/** Project a geometric vertex to screen space
+/** Project a geometric vertex to screen space.
  * Apply model, view and projection transformations
  *
  * @param v: model vertex
  */
 vec3f_t project_to_screen(const vec3f_t& v);
 
-/** Set camera position
+/** Set camera position.
  *
  * @param eye: camera position (world coordinates)
  * @param at: point to look at (world coordinates)
  * @param up: vector pointing to the upward direction (world coordinates)
  */
 void lookat(const vec3f_t& eye, const vec3f_t& at, const vec3f_t& up);
+
+namespace model_mat {
+
+/** Load identity matrix. */
+void identity(void);
+
+/** Set scaling.
+ * Multiply current model matrix by scaling matrix.
+ *
+ * @param x: scale factor for x axis
+ * @param y: scale factor for y axis
+ * @param z: scale factor for z axis
+ */
+void scale(float x, float y, float z);
+
+} /* namespace model_mat */
 
 } /* namespace render */
 
