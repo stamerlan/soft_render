@@ -68,6 +68,13 @@ public:
 		return data_[row][column];
 	}
 
+	matrix_t<ROWS, COLUMNS, T> operator*=(const matrix_t<COLUMNS, COLUMNS, T>& rhs)
+	{
+		auto product = *this * rhs;
+		*this = product;
+		return *this;
+	}
+
 protected:
 	T data_[ROWS][COLUMNS];
 };
