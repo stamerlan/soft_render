@@ -9,7 +9,7 @@
  * if point p at the right hand side of AB the result is positive. If the point
  * exactly on the line - 0, otherwise - negative.
  */
-static float edge_function(const Vec3f& a, const Vec3f& b, const Vec3f& p)
+static float edge_function(const vec3f_t& a, const vec3f_t& b, const vec3f_t& p)
 {
 	return (a.x - b.x) * (p.y - a.y) - (a.y - b.y) * (p.x - a.x);
 }
@@ -83,8 +83,8 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 	auto p2 = project_to_screen(v2.v);
 
 	/* bounding box */
-	Vec2i bbox_min = { (int)std::min({p0.x, p1.x, p2.x}), (int)std::min({p0.y, p1.y, p2.y}) };
-	Vec2i bbox_max = { (int)std::max({p0.x, p1.x, p2.x}), (int)std::max({p0.y, p1.y, p2.y}) };
+	vec2i_t bbox_min = { (int)std::min({p0.x, p1.x, p2.x}), (int)std::min({p0.y, p1.y, p2.y}) };
+	vec2i_t bbox_max = { (int)std::max({p0.x, p1.x, p2.x}), (int)std::max({p0.y, p1.y, p2.y}) };
 
 	bbox_min.x = std::max(bbox_min.x, 0);
 	bbox_min.x = std::min(bbox_min.x, width - 1);
@@ -105,7 +105,7 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 		 * are few or none pixels which belong to the triangle
 		 */
 		for (int x = bbox_min.x; x <= bbox_max.x; x++) {
-			Vec3f p{ x + 0.5f, y + 0.5f, 0.f };
+			vec3f_t p{ x + 0.5f, y + 0.5f, 0.f };
 
 			/* to barycentric coordinates */
 			auto edge = p2 - p1;
@@ -153,7 +153,7 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 				continue;
 
 			/* calculate normal */
-			Vec3f n{ w0 * v0.norm + w1 * v1.norm + w2 * v2.norm };
+			vec3f_t n{ w0 * v0.norm + w1 * v1.norm + w2 * v2.norm };
 
 			/* calculate light intensity */
 			float intensity = n.z; /* TODO: multiply by light vector */
@@ -165,7 +165,7 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 			uint32_t color;
 			if (texture.color != nullptr) {
 				/* calculate texture coordinate */
-				Vec2f tex = w0 * v0.tex + w1 * v1.tex + w2 * v2.tex;
+				vec2f_t tex = w0 * v0.tex + w1 * v1.tex + w2 * v2.tex;
 
 				uint32_t t = texture(tex.u, tex.v);
 				float r = intensity * get_r(t);

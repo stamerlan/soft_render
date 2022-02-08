@@ -36,7 +36,7 @@
     <ClInclude Include="src\render\render.h" />
     <ClInclude Include="src\render\triangle.h" />
     <ClInclude Include="src\render\zbuf.h" />
-    <ClInclude Include="src\vec.h" />
+    <ClInclude Include="src\vector.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\african_head.obj">

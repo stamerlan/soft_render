@@ -5,17 +5,17 @@
 #include <type_traits>
 
 template<size_t ROWS, size_t COLUMNS, typename T>
-class Matrix {
+class matrix_t {
 	static_assert(ROWS > 0, "matrix must have at least one row");
 	static_assert(COLUMNS > 0, "matrix must have at least on column");
 public:
-	Matrix(void) : data_{ 0 }
+	matrix_t(void) : data_{ 0 }
 	{
 	}
 
 	/* TODO: Add nested initializer list constructor */
 	template <typename... RestArgs>
-	Matrix(T first, RestArgs... rest)
+	matrix_t(T first, RestArgs... rest)
 		: data_{ first, T(rest)... }
 	{
 	}
@@ -31,9 +31,9 @@ public:
 
 	/** Multiply matrices */
 	template<size_t RHS_COLUMNS>
-	Matrix<ROWS, RHS_COLUMNS, T> operator*(const Matrix<COLUMNS, RHS_COLUMNS, T>& rhs) const
+	matrix_t<ROWS, RHS_COLUMNS, T> operator*(const matrix_t<COLUMNS, RHS_COLUMNS, T>& rhs) const
 	{
-		Matrix<ROWS, RHS_COLUMNS, T> ret;
+		matrix_t<ROWS, RHS_COLUMNS, T> ret;
 		for (size_t r = 0; r < ROWS; r++) {
 			for (size_t c = 0; c < RHS_COLUMNS; c++) {
 				for (size_t i = 0; i < COLUMNS; i++)
@@ -43,7 +43,7 @@ public:
 		return ret;
 	}
 
-	Matrix<ROWS, COLUMNS, T> operator/=(T rhs)
+	matrix_t<ROWS, COLUMNS, T> operator/=(T rhs)
 	{
 		for (size_t i = 0; i < ROWS; i++)
 			for (size_t j = 0; j < COLUMNS; j++)
@@ -51,7 +51,7 @@ public:
 		return *this;
 	}
 
-	Matrix<ROWS, COLUMNS, T> operator/(T rhs)
+	matrix_t<ROWS, COLUMNS, T> operator/(T rhs)
 	{
 		auto copy = *this;
 		copy /= rhs;
@@ -73,7 +73,7 @@ protected:
 };
 
 template<size_t ROWS, size_t COLUMNS, typename T>
-std::ostream& operator<<(std::ostream& ostream, const Matrix<ROWS, COLUMNS, T>& m)
+std::ostream& operator<<(std::ostream& ostream, const matrix_t<ROWS, COLUMNS, T>& m)
 {
 	for (size_t i = 0; i < ROWS; i++) {
 		ostream << "[";
@@ -85,7 +85,7 @@ std::ostream& operator<<(std::ostream& ostream, const Matrix<ROWS, COLUMNS, T>& 
 	return ostream;
 }
 
-using Mat4x4f = Matrix<4, 4, float>;
-using Mat4x1f = Matrix<4, 1, float>;
+using mat4x4f_t = matrix_t<4, 4, float>;
+using mat4x1f_t = matrix_t<4, 1, float>;
 
 #endif /* MARIX_H_ */

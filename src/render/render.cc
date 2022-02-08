@@ -7,20 +7,20 @@ static bool zbuf_enabled = true;
  * In other words converts model coordinates to world coordinates:
  * model * v = world_coordinates
  */
-static Mat4x4f model;
+static mat4x4f_t model;
 /* Project world coordinates to camera space:
  * view * world_coordinates = camera_coordinates
  */
-static Mat4x4f view;
+static mat4x4f_t view;
 /* Apply perspective projection:
  * projection * camera_coordinates = homogeneous_coordinates
  */
-static Mat4x4f projection;
+static mat4x4f_t projection;
 /* Convert homogeneous coordinates (-1.0, 1.0) to screen coordinates */
-static Mat4x4f viewport;
+static mat4x4f_t viewport;
 
 /* A product of (viewport * projection * view * model) */
-static Mat4x4f MVP;
+static mat4x4f_t MVP;
 
 static void update_MVP(void)
 {
@@ -78,14 +78,14 @@ void render::zbuf_enable(bool en)
 	zbuf_enabled = en;
 }
 
-Vec3f render::project_to_screen(const Vec3f& v)
+vec3f_t render::project_to_screen(const vec3f_t& v)
 {
-	Vec4f r = MVP * Mat4x1f{ v.x, v.y, v.z, 1.f };
+	vec4f_t r = MVP * mat4x1f_t{ v.x, v.y, v.z, 1.f };
 	r /= r.w;
 	return r;
 }
 
-void render::lookat(const Vec3f& eye, const Vec3f& at, const Vec3f& up)
+void render::lookat(const vec3f_t& eye, const vec3f_t& at, const vec3f_t& up)
 {
 	auto forward = (eye - at).normalize();
 	auto up_norm = up;

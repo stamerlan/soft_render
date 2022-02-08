@@ -40,7 +40,7 @@ void render::line(int x0, int y0, int x1, int y1, uint32_t color)
 	}
 }
 
-void render::line(Vec2f p0, Vec2f p1, uint32_t color)
+void render::line(vec2f_t p0, vec2f_t p1, uint32_t color)
 {
 	auto [width, height] = display::get_resolution();
 	int x0 = (int)((p0.x + 1.f) * width / 2);
@@ -51,10 +51,10 @@ void render::line(Vec2f p0, Vec2f p1, uint32_t color)
 	line(x0, y0, x1, y1, color);
 }
 
-extern Mat4x4f model_view;
-extern Mat4x4f viewport;
-extern Mat4x4f projection;
-void render::line(Vec3f p0, Vec3f p1, uint32_t color)
+extern mat4x4f_t model_view;
+extern mat4x4f_t viewport;
+extern mat4x4f_t projection;
+void render::line(vec3f_t p0, vec3f_t p1, uint32_t color)
 {
 	auto v0{ project_to_screen(p0) };
 	auto v1{ project_to_screen(p1) };

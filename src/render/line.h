@@ -2,7 +2,7 @@
 #define RENDER_LINE_H_
 
 #include <cstdint>
-#include "vec.h"
+#include <vector.h>
 
 namespace render {
 
@@ -22,7 +22,7 @@ void line(int x0, int y0, int x1, int y1, uint32_t color);
  * @param p1: point 1 vector
  * @param color: the line color in RGB888 format
  */
-void line(Vec2f p0, Vec2f p1, uint32_t color);
+void line(vec2f_t p0, vec2f_t p1, uint32_t color);
 
 /** Draw a line in normalized device coordinates (-1.0, 1.0)
  *
@@ -30,7 +30,7 @@ void line(Vec2f p0, Vec2f p1, uint32_t color);
  * @param p1: point 1 vector
  * @param color: the line color in RGB888 format
  */
-void line(Vec3f p0, Vec3f p1, uint32_t color);
+void line(vec3f_t p0, vec3f_t p1, uint32_t color);
 
 } /* namespace render */
 

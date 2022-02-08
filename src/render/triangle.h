@@ -4,14 +4,14 @@
 #include <cstdint>
 #include <vector>
 #include <model/model.h>
-#include "vec.h"
+#include <vector.h>
 
 namespace render {
 
 struct Vertex {
-	Vec3f v;
-	Vec3f norm;
-	Vec2f tex;
+	vec3f_t v;
+	vec3f_t norm;
+	vec2f_t tex;
 	uint32_t color;
 };
 

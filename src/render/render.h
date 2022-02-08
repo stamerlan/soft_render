@@ -20,7 +20,7 @@ void zbuf_enable(bool en);
  *
  * @param v: model vertex
  */
-Vec3f project_to_screen(const Vec3f& v);
+vec3f_t project_to_screen(const vec3f_t& v);
 
 /** Set camera position
  *
@@ -28,7 +28,7 @@ Vec3f project_to_screen(const Vec3f& v);
  * @param at: point to look at (world coordinates)
  * @param up: vector pointing to the upward direction (world coordinates)
  */
-void lookat(const Vec3f& eye, const Vec3f& at, const Vec3f& up);
+void lookat(const vec3f_t& eye, const vec3f_t& at, const vec3f_t& up);
 
 } /* namespace render */
 

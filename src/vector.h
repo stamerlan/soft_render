@@ -10,15 +10,15 @@
 #include "matrix.h"
 
 template <size_t SIZE, typename T>
-struct Vec {
+struct vec_t {
 	static_assert(SIZE > 0);
 
-	Vec(void) : data{ 0 }
+	vec_t(void) : data{ 0 }
 	{
 	}
 
 	template<size_t MAT_SIZE>
-	Vec(const Matrix<MAT_SIZE, 1, T>& m)
+	vec_t(const matrix_t<MAT_SIZE, 1, T>& m)
 	{
 		for (size_t i = 0; i < std::min(SIZE, MAT_SIZE); i++)
 			data[i] = m(i, 0);
@@ -27,7 +27,7 @@ struct Vec {
 	}
 
 	template<size_t MAT_SIZE>
-	Vec(const Matrix<1, MAT_SIZE, T>& m)
+	vec_t(const matrix_t<1, MAT_SIZE, T>& m)
 	{
 		for (size_t i = 0; i < std::min(SIZE, MAT_SIZE); i++)
 			data[i] = m(0, i);
@@ -36,7 +36,7 @@ struct Vec {
 	}
 
 	template<size_t OTHER_V_SIZE>
-	Vec(const Vec<OTHER_V_SIZE, T>& v)
+	vec_t(const vec_t<OTHER_V_SIZE, T>& v)
 	{
 		for (size_t i = 0; i < std::min(SIZE, OTHER_V_SIZE); i++)
 			data[i] = v[i];
@@ -45,7 +45,7 @@ struct Vec {
 	}
 
 	template <typename... RestArgs>
-	Vec(typename std::enable_if<sizeof...(RestArgs) + 1 == SIZE, T>::type first, RestArgs... rest)
+	vec_t(typename std::enable_if<sizeof...(RestArgs) + 1 == SIZE, T>::type first, RestArgs... rest)
 		: data{ first, T(rest)... }
 	{
 	}
@@ -83,7 +83,7 @@ struct Vec {
 		return std::sqrt(len);
 	}
 
-	Vec<SIZE, T>& normalize(void)
+	vec_t<SIZE, T>& normalize(void)
 	{
 		T len = length();
 		if (len > 0) {
@@ -94,7 +94,7 @@ struct Vec {
 		return *this;
 	}
 
-	T dot(const Vec<SIZE, T>& rhs) const
+	T dot(const vec_t<SIZE, T>& rhs) const
 	{
 		T sum = 0;
 		for (size_t i = 0; i < SIZE; i++)
@@ -114,28 +114,28 @@ struct Vec {
 		return data[index];
 	}
 
-	Vec<SIZE, T>& operator+=(const Vec<SIZE, T>& rhs)
+	vec_t<SIZE, T>& operator+=(const vec_t<SIZE, T>& rhs)
 	{
 		for (size_t i = 0; i < SIZE; i++)
 			data[i] += rhs.data[i];
 		return *this;
 	}
 
-	Vec<SIZE, T>& operator-=(const Vec<SIZE, T>& rhs)
+	vec_t<SIZE, T>& operator-=(const vec_t<SIZE, T>& rhs)
 	{
 		for (size_t i = 0; i < SIZE; i++)
 			data[i] -= rhs.data[i];
 		return *this;
 	}
 
-	Vec<SIZE, T>& operator*=(T scalar)
+	vec_t<SIZE, T>& operator*=(T scalar)
 	{
 		for (auto& i : data)
 			i *= scalar;
 		return *this;
 	}
 
-	Vec<SIZE, T>& operator/=(T scalar)
+	vec_t<SIZE, T>& operator/=(T scalar)
 	{
 		for (auto& i : data)
 			i /= scalar;
@@ -144,7 +144,7 @@ struct Vec {
 
 	/* cross product is defined only for 3d space */
 	template <size_t SZ = SIZE, typename std::enable_if_t<SZ == 3, int> = 0>
-	Vec<SIZE, T>& operator^=(const Vec<SIZE, T>& rhs)
+	vec_t<SIZE, T>& operator^=(const vec_t<SIZE, T>& rhs)
 	{
 		T x = this->y * rhs.z - this->z * rhs.y;
 		T y = this->z * rhs.x - this->x * rhs.z;
@@ -153,21 +153,21 @@ struct Vec {
 		return *this;
 	}
 
-	Vec<SIZE, T> operator+(const Vec<SIZE, T>& rhs) const
+	vec_t<SIZE, T> operator+(const vec_t<SIZE, T>& rhs) const
 	{
 		auto copy = *this;
 		copy += rhs;
 		return copy;
 	}
 
-	Vec<SIZE, T> operator-(const Vec<SIZE, T>& rhs) const
+	vec_t<SIZE, T> operator-(const vec_t<SIZE, T>& rhs) const
 	{
 		auto copy = *this;
 		copy -= rhs;
 		return copy;
 	}
 
-	Vec<SIZE, T> operator*(T scalar) const
+	vec_t<SIZE, T> operator*(T scalar) const
 	{
 		auto v = *this;
 		for (auto& i : v.data)
@@ -175,7 +175,7 @@ struct Vec {
 		return v;
 	}
 
-	T operator*(const Vec<SIZE, T>& rhs) const
+	T operator*(const vec_t<SIZE, T>& rhs) const
 	{
 		T sum = 0;
 		for (size_t i = 0; i < SIZE; i++)
@@ -185,14 +185,14 @@ struct Vec {
 
 	/* cross product is defined only for 3d space */
 	template <size_t SZ = SIZE, typename std::enable_if_t<SZ == 3, int> = 0>
-	Vec<SIZE, T> operator^(const Vec<SIZE, T>& rhs) const
+	vec_t<SIZE, T> operator^(const vec_t<SIZE, T>& rhs) const
 	{
 		auto copy = *this;
 		copy ^= rhs;
 		return copy;
 	}
 
-	Vec<SIZE, T> operator/(T scalar) const
+	vec_t<SIZE, T> operator/(T scalar) const
 	{
 		auto copy = *this;
 		copy /= scalar;
@@ -204,13 +204,13 @@ protected:
 };
 
 template <size_t SIZE, typename T>
-Vec<SIZE, T> operator*(T scalar, const Vec<SIZE, T>& v)
+vec_t<SIZE, T> operator*(T scalar, const vec_t<SIZE, T>& v)
 {
 	return v * scalar;
 }
 
 template <size_t SIZE, typename T>
-std::ostream& operator<<(std::ostream& ostream, const Vec<SIZE, T>& v)
+std::ostream& operator<<(std::ostream& ostream, const vec_t<SIZE, T>& v)
 {
 	ostream << "{" << v[0];
 	for (size_t i = 1; i < SIZE; i++)
@@ -220,10 +220,10 @@ std::ostream& operator<<(std::ostream& ostream, const Vec<SIZE, T>& v)
 	return ostream;
 }
 
-using Vec2f = Vec<2, float>;
-using Vec2i = Vec<2, int>;
-using Vec3f = Vec<3, float>;
-using Vec3i = Vec<3, int>;
-using Vec4f = Vec<4, float>;
+using vec2f_t = vec_t<2, float>;
+using vec2i_t = vec_t<2, int>;
+using vec3f_t = vec_t<3, float>;
+using vec3i_t = vec_t<3, int>;
+using vec4f_t = vec_t<4, float>;
 
 #endif /* VEC_H_ */

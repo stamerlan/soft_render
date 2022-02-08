@@ -50,7 +50,7 @@
     <ClInclude Include="src\render\line.h">
       <Filter>src\render</Filter>
     </ClInclude>
-    <ClInclude Include="src\vec.h">
+    <ClInclude Include="src\vector.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\model\model.h">

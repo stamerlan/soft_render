@@ -9,9 +9,9 @@ int main(void)
 	constexpr int w = 600;
 	constexpr int h = 600;
 
-	const Vec3f eye{ 0.f, 0.f, 3.f };
-	const Vec3f center{ 0.f, 0.f, 0.f };
-	const Vec3f up{ 0.f, 1.f, 0.f };
+	const vec3f_t eye{ 0.f, 0.f, 3.f };
+	const vec3f_t center{ 0.f, 0.f, 0.f };
+	const vec3f_t up{ 0.f, 1.f, 0.f };
 
 	render::init(w, h);
 	auto [width, height] = display::get_resolution();
