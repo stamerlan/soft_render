@@ -80,10 +80,10 @@ void render::line(vec3f_t p0, vec3f_t p1, uint32_t color)
 	float z = v0.z;
 	for (int x = (int)v0.x, y = (int)v0.y; x <= v1.x; x++, z += z_step) {
 		if (steep) {
-			if (zbuf::depth_test(y, x, z))
+			if (zbuf::put(y, x, z))
 				display::put(y, x, color);
 		} else {
-			if (zbuf::depth_test(x, y, z))
+			if (zbuf::put(x, y, z))
 				display::put(x, y, color);
 		}
 

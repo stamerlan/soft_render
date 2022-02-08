@@ -149,7 +149,7 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 
 			/* depth test */
 			p.z = w0 * v0.v.z + w1 * v1.v.z + w2 * v2.v.z;
-			if (!zbuf::depth_test(x, y, p.z))
+			if (!zbuf::put(x, y, p.z))
 				continue;
 
 			/* calculate normal */

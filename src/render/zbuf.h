@@ -21,9 +21,9 @@ void clear(void);
  */
 void release(void);
 
-/** Do depth test and update depth for the pixel.
- * If z is less than current depth value of the pixel, store new depth value of
- * the pixel and return true, false otherwise.
+/** Do depth test
+ * If z is less than current depth value of the pixel return true, false
+ * otherwise.
  *
  * @param x: x in screen coordinates.
  * @param y: y in screen coordinates.
@@ -31,6 +31,17 @@ void release(void);
  * @return If depth test passed or not.
  */
 bool depth_test(int x, int y, float z);
+
+/** Put a point to Z-buffer
+ * Do depth test, if test passed store new depth value for the point and return
+ * true. Otherwise return false
+ *
+ * @param x: x in screen coordinates.
+ * @param y: y in screen coordinates.
+ * @param z: depth.
+ * @return If depth test passed or not.
+ */
+bool put(int x, int y, float z);
 
 } /* namespace render::zbuf */
 

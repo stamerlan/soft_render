@@ -32,9 +32,15 @@ bool render::zbuf::depth_test(int x, int y, float z)
 	if (x < 0 || (unsigned)x >= width || y < 0 || (unsigned)y >= height)
 		return false;
 
-	if (z > zbuffer[(size_t)y * width + x]) {
+	return z > zbuffer[(size_t)y * width + x];
+}
+
+bool render::zbuf::put(int x, int y, float z)
+{
+	if (depth_test(x, y, z)) {
 		zbuffer[(size_t)y * width + x] = z;
 		return true;
 	}
+
 	return false;
 }
