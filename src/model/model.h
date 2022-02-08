@@ -4,7 +4,7 @@
 #include <system_error>
 #include <vector>
 
-class Model {
+class model_t {
 public:
 	struct Face {
 		int v_idx[3];
@@ -23,7 +23,7 @@ public:
 	 * @param model_filename: Identifier to load .obj file from
 	 * @param texture_filename: Identifier to load .tga texture from
 	 */
-	Model(const char *model_filename, const char *texture_filename) noexcept;
+	model_t(const char *model_filename, const char *texture_filename) noexcept;
 
 	bool is_loaded(void) const noexcept;
 

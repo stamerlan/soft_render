@@ -48,9 +48,9 @@ static std::vector<float> parse_coord(std::string_view str)
 /* TODO: add error handling in case input string is invalid or doesn't contain
  * normal/texture indices
  */
-static struct Model::Face parse_faces(std::string_view str)
+static struct model_t::Face parse_faces(std::string_view str)
 {
-	struct Model::Face ret;
+	struct model_t::Face ret;
 
 	size_t idx = 0;
 	for (auto p = str.data(); p < str.data() + str.size(); idx++) {
@@ -93,7 +93,7 @@ static struct Model::Face parse_faces(std::string_view str)
 }
 
 /* TODO: malformed files */
-std::errc Model::load_texture(const char *filename) noexcept
+std::errc model_t::load_texture(const char *filename) noexcept
 {
 	std::ifstream file(filename, std::ifstream::binary);
 	if (!file.is_open()) {
@@ -245,7 +245,7 @@ std::errc Model::load_texture(const char *filename) noexcept
 	return {};
 }
 
-Model::Model(const char *model_filename, const char *texture_filename) noexcept
+model_t::model_t(const char *model_filename, const char *texture_filename) noexcept
 {
 	is_loaded_ = false;
 
@@ -370,7 +370,7 @@ Model::Model(const char *model_filename, const char *texture_filename) noexcept
 	is_loaded_ = true;
 }
 
-bool Model::is_loaded(void) const noexcept
+bool model_t::is_loaded(void) const noexcept
 {
 	return is_loaded_;
 }

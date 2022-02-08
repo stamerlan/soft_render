@@ -187,7 +187,7 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 	}
 }
 
-void render::triangle(const std::vector<::Model::Face>& faces,
+void render::triangle(const std::vector<::model_t::Face>& faces,
 	const std::vector<std::vector<float>>& vertices,
 	const std::vector<std::vector<float>>& normals,
 	const std::vector<std::vector<float>>& texture_uv)

@@ -35,7 +35,7 @@ void triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2);
  *
  * @note The function doesn't check if input arrays are valid.
  */
-void triangle(const std::vector<::Model::Face>& faces,
+void triangle(const std::vector<::model_t::Face>& faces,
 	const std::vector<std::vector<float>>& vertices,
 	const std::vector<std::vector<float>>& normals,
 	const std::vector<std::vector<float>>& texture_uv);

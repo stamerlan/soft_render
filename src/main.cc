@@ -16,7 +16,7 @@ int main(void)
 	render::init(w, h);
 	auto [width, height] = display::get_resolution();
 
-	Model obj("data/african_head.obj", "data/african_head_diffuse.tga");
+	model_t obj("data/african_head.obj", "data/african_head_diffuse.tga");
 	if (!obj.is_loaded())
 		goto out;
 	
