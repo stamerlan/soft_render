@@ -35,7 +35,7 @@ namespace model_mat {
 /** Load identity matrix. */
 void identity(void);
 
-/** Set scaling.
+/** Set model scaling.
  * Multiply current model matrix by scaling matrix.
  *
  * @param x: scale factor for x axis
@@ -43,6 +43,16 @@ void identity(void);
  * @param z: scale factor for z axis
  */
 void scale(float x, float y, float z);
+
+/** Set model translation.
+ * Multiply current model matrix by translation matrix. In other words move a
+ * model.
+ * 
+ * @param x: move by x axis
+ * @param y: move by y axis
+ * @param z: move by z axis
+ */
+void translate(float x, float y, float z);
 
 } /* namespace model_mat */
 

@@ -121,3 +121,15 @@ void render::model_mat::scale(float x, float y, float z)
 	model *= scaling;
 	update_MVP();
 }
+
+void render::model_mat::translate(float x, float y, float z)
+{
+	mat4x4f_t translation;
+	translation.identity();
+	translation(0, 3) = x;
+	translation(1, 3) = y;
+	translation(2, 3) = z;
+
+	model *= translation;
+	update_MVP();
+}

@@ -36,6 +36,7 @@ int main(void)
 		render::line({ 0.f, 0.f, -4.f }, { 0.f, 0.f, 4.f }, 0x0000FF);
 
 		render::model_mat::scale(0.75f, 0.75f, 1.f);
+		render::model_mat::translate(-1.f, 0.f, -1.5f);
 		render::triangle(obj.faces_, obj.vertices_, obj.normals_, obj.texture_);
 		render::update();
 	}
