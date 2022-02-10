@@ -150,3 +150,31 @@ void render::model_mat::rotate_x(float angle)
 	model *= rotation;
 	update_MVP();
 }
+
+void render::model_mat::rotate(float angle, float x, float y, float z)
+{
+	vec3f_t r{ x, y, z };
+	r.normalize();
+
+	float c = cos(angle);
+	float s = sin(angle);
+
+	mat4x4f_t rotation;
+
+	rotation(0, 0) = x * x * (1.f - c) + c;
+	rotation(0, 1) = x * y * (1.f - c) - z * s;
+	rotation(0, 2) = x * z * (1.f - c) + y * s;
+
+	rotation(1, 0) = y * x * (1.f - c) + z * s;
+	rotation(1, 1) = y * y * (1.f - c) + c;
+	rotation(1, 2) = y * z * (1.f - c) - x * s;
+
+	rotation(2, 0) = z * x * (1.f - c) - y * s;
+	rotation(2, 1) = z * y * (1.f - c) + x * s;
+	rotation(2, 2) = z * z * (1.f - c) + c;
+
+	rotation(3, 3) = 1.f;
+
+	model *= rotation;
+	update_MVP();
+}

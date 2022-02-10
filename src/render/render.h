@@ -47,7 +47,7 @@ void scale(float x, float y, float z);
 /** Set model translation.
  * Multiply current model matrix by translation matrix. In other words move a
  * model.
- * 
+ *
  * @param x: move by x axis
  * @param y: move by y axis
  * @param z: move by z axis
@@ -60,6 +60,14 @@ void translate(float x, float y, float z);
  * @param angle: angle expressed in radians.
  */
 void rotate_x(float angle);
+
+/** Rotate model.
+ * Multiply current model matrix by rotation matrix.
+ *
+ * @param angle: angle expressed in radians.
+ * @param x, y, z: specify x, y and z coordinates of a rotation vector.
+ */
+void rotate(float angle, float x, float y, float z);
 
 } /* namespace model_mat */
 

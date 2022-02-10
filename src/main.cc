@@ -53,7 +53,7 @@ int main(void)
 
 		render::model_mat::scale(0.75f, 0.75f, 1.f);
 		render::model_mat::translate(-1.f, 0.f, -1.5f);
-		render::model_mat::rotate_x(angle);
+		render::model_mat::rotate(angle, 0.f, 1.f, 0.f);
 		render::triangle(obj.faces_, obj.vertices_, obj.normals_, obj.texture_);
 		render::update();
 	}
