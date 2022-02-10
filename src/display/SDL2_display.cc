@@ -130,6 +130,22 @@ int display::get_msg(Message& m)
 			m.type = Message::type::QUIT;
 			return 1;
 		}
+		if (evt.key.keysym.sym == SDLK_UP) {
+			m.type = Message::type::MOVE_FURTHER;
+			return 1;
+		}
+		if (evt.key.keysym.sym == SDLK_DOWN) {
+			m.type = Message::type::MOVE_CLOSER;
+			return 1;
+		}
+		if (evt.key.keysym.sym == SDLK_LEFT) {
+			m.type = Message::type::MOVE_LEFT;
+			return 1;
+		}
+		if (evt.key.keysym.sym == SDLK_RIGHT) {
+			m.type = Message::type::MOVE_RIGHT;
+			return 1;
+		}
 		break;
 	}
 
