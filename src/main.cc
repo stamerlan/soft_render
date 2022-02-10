@@ -1,4 +1,5 @@
 #include <chrono>
+#include <iostream>
 #include <numbers>
 #include "display/display.h"
 #include "matrix.h"
@@ -8,12 +9,17 @@
 
 int main(void)
 {
+	/* display resolution */
 	constexpr int w = 600;
 	constexpr int h = 600;
 
+	/* camera position */
 	const vec3f_t eye{ 0.f, 0.f, 3.f };
 	const vec3f_t center{ 0.f, 0.f, 0.f };
 	const vec3f_t up{ 0.f, 1.f, 0.f };
+
+	/* model position */
+	vec3f_t pos{ 0.f, 0.f, 0.f };
 
 	render::init(w, h);
 	auto [width, height] = display::get_resolution();
@@ -27,9 +33,29 @@ int main(void)
 
 	Message m;
 	for (bool quit = false; !quit;) {
-		while (display::get_msg(m))
-			if (m.type == Message::type::QUIT)
+		while (display::get_msg(m)) {
+			switch (m.type) {
+			case Message::type::QUIT:
 				quit = true;
+				break;
+			case Message::type::MOVE_FURTHER:
+				pos.z -= 1.f;
+				std::cout << "pos: " << pos << "\n";
+				break;
+			case Message::type::MOVE_CLOSER:
+				pos.z += 1.f;
+				std::cout << "pos: " << pos << "\n";
+				break;
+			case Message::type::MOVE_LEFT:
+				pos.x -= 1.f;
+				std::cout << "pos: " << pos << "\n";
+				break;
+			case Message::type::MOVE_RIGHT:
+				pos.x += 1.f;
+				std::cout << "pos: " << pos << "\n";
+				break;
+			}
+		}
 
 		static float angle{ 0.f };
 		{
@@ -51,8 +77,7 @@ int main(void)
 		render::line({ 0.f, -2.f, 0.f }, { 0.f, 2.f, 0.f }, 0x00FF00);
 		render::line({ 0.f, 0.f, -4.f }, { 0.f, 0.f, 4.f }, 0x0000FF);
 
-		render::model_mat::scale(0.75f, 0.75f, 1.f);
-		render::model_mat::translate(-1.f, 0.f, -1.5f);
+		render::model_mat::translate(pos.x, pos.y, pos.z);
 		render::model_mat::rotate(angle, 0.f, 1.f, 0.f);
 		render::triangle(obj.faces_, obj.vertices_, obj.normals_, obj.texture_);
 		render::update();
