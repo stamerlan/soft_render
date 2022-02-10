@@ -29,6 +29,14 @@ public:
 				data_[r][c] = r == c ? static_cast<T>(1) : static_cast<T>(0);
 	}
 
+	/** Reset matrix to zero */
+	void reset(void)
+	{
+		for (size_t r = 0; r < ROWS; r++)
+			for (size_t c = 0; c < COLUMNS; c++)
+				data_[r][c] = 0;
+	}
+
 	/** Multiply matrices */
 	template<size_t RHS_COLUMNS>
 	matrix_t<ROWS, RHS_COLUMNS, T> operator*(const matrix_t<COLUMNS, RHS_COLUMNS, T>& rhs) const
