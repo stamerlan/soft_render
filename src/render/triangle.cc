@@ -148,7 +148,7 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 			w2 /= area;
 
 			/* depth test */
-			p.z = w0 * v0.v.z + w1 * v1.v.z + w2 * v2.v.z;
+			p.z = w0 * p0.z + w1 * p1.z + w2 * p2.z;
 			if (!zbuf::put(x, y, p.z))
 				continue;
 
