@@ -22,6 +22,14 @@ void zbuf_enable(bool en);
  */
 vec3f_t project_to_screen(const vec3f_t& v);
 
+/** Project a vector from model space to world space.
+ * Apply model transformation. Used to convert a normal vector from model space
+ * to world space (for lighting calculation).
+ *
+ * @param v: a vector
+ */
+vec3f_t project_to_world(const vec3f_t& v);
+
 /** Set camera position.
  *
  * @param eye: camera position (world coordinates)

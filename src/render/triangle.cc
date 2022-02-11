@@ -153,7 +153,8 @@ void render::triangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
 				continue;
 
 			/* calculate normal */
-			vec3f_t n{ w0 * v0.norm + w1 * v1.norm + w2 * v2.norm };
+			vec3f_t n = project_to_world({ w0 * v0.norm + w1 * v1.norm + w2 * v2.norm });
+			n.normalize();
 
 			/* calculate light intensity */
 			float intensity = n.z; /* TODO: multiply by light vector */

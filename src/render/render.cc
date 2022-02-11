@@ -85,6 +85,11 @@ vec3f_t render::project_to_screen(const vec3f_t& v)
 	return r;
 }
 
+vec3f_t render::project_to_world(const vec3f_t & v)
+{
+	return model * mat4x1f_t(v.x, v.y, v.z, 0.f);
+}
+
 void render::lookat(const vec3f_t& eye, const vec3f_t& at, const vec3f_t& up)
 {
 	auto forward = (eye - at).normalize();
